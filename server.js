@@ -1,20 +1,7 @@
-import {ApolloServer,gql} from "apollo-server"
+import {ApolloServer} from "apollo-server"
 import {ApolloServerPluginLandingPageGraphQLPlayground} from "apollo-server-core"
-
-const typeDefs = gql`
-   type Query{
-    greet:String
-   }
-
-`
-
-const resolvers ={
-    Query:{
-        greet:()=>{
-            return "hello world"
-        }
-    }
-}
+import typeDefs from "./schemaGql.js";
+import resolvers from "./resolvers.js";
 
 const server =new ApolloServer({
     typeDefs,
