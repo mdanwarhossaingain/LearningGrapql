@@ -1,22 +1,25 @@
 import { quotes,users } from "./fakedb.js"
 import {randomBytes} from 'crypto'
 import mongoose from 'mongoose'
-const User =mongoose.model("User")
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from "./config.js"
 
+const User =mongoose.model("User")
+const Quote = mongoose.model("Quote")
+
+
 const resolvers ={
     Query:{
-        users:()=>users,
-        user:(_,{_id})=>users.find(user=>user._id == _id) ,
-        quotes:()=>quotes,
-        iquote:(_,{by})=>quotes.filter(quote=>quote.by == by),
+        users:async () => await User.find({}),
+        user:async (_,{_id})=> await User.findOne({_id}),
+        quotes:async ()=>await Quote.find({}).populate("by","_id firstName"),
+        iquote:async (_,{by})=> await Quote.find({by})
 
     },
 
     User:{
-        quotes:(ur)=>quotes.filter(quote=>quote.by ==ur._id)
+        quotes:async (ur)=> await Quote.find({by:ur._id})
     },
 
     Mutation:{
@@ -54,6 +57,16 @@ const resolvers ={
 
            return {token}
 
+        },
+
+        createQuote:async (_,{name},{userId})=>{
+           if(!userId) throw new Error("You must be logged in")
+           const newQuote = new Quote({
+               name,
+               by:userId
+           })
+           await newQuote.save()
+           return "Quote saved successfully"
         }
 
 
