@@ -42,3 +42,24 @@ export const quotes = [
     },
 
 ] 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+anwar
