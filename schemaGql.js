@@ -10,15 +10,14 @@ const typeDefs = gql`
 
 
    type QuoteWithName{
-     name:String
-     by:IdName
- }
+    name:String 
+    by:IdName
+   }
 
-
-  type IdName{
-     _id:String
-     firstName:String
- }
+   type IdName{
+    _id:String
+    firstName:String
+   }
 
 
    type User{
